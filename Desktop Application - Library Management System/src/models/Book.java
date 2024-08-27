@@ -7,6 +7,7 @@ public class Book {
     private int year;
     private int availableCopies;
 
+    // Constructor
     public Book(int bookID, String title, String author, int year, int availableCopies) {
         this.bookID = bookID;
         this.title = title;
@@ -16,7 +17,6 @@ public class Book {
     }
 
     // Getters and Setters
-
     public int getBookID() {
         return bookID;
     }

@@ -6,7 +6,7 @@ public class Borrower {
     private String contact;
     private String email;
 
-    public Borrower(int borrowerID, String name, String contact, String email) {
+    public Borrower(int  borrowerID, String name, String contact, String email) {
         this.borrowerID = borrowerID;
         this.name = name;
         this.contact = contact;

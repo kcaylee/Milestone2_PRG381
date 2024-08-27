@@ -6,8 +6,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class LibraryDB {
-    private Connection conn;
+    private final Connection conn;
 
     public LibraryDB() throws SQLException {
         conn = DriverManager.getConnection("jdbc:derby:LibraryDB;create=true");
@@ -124,5 +125,6 @@ public class LibraryDB {
         pstmt.executeUpdate();
     }
 }
+
 
 
