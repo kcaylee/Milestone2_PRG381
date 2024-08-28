@@ -13,7 +13,7 @@ public class Borrower {
         this.email = email;
     }
 
-    // Getters and Setters
+ 
 
     public int getBorrowerID() {
         return borrowerID;

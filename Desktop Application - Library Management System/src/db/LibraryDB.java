@@ -8,6 +8,7 @@ import java.util.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import models.BorrowBook;
 
 
 
@@ -58,15 +59,15 @@ public class LibraryDB {
                        "Email VARCHAR(255))");
                System.out.println("Borrowers table created successfully.");
                
-               stmt.executeUpdate("CREATE TABLE BorrowedBooks (" +
-                "LoanID INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
+                stmt.executeUpdate("CREATE TABLE BorrowBooks (" +
                 "BorrowerID INT, " +
                 "BookID INT, " +
                 "BorrowDate DATE, " +
                 "ReturnDate DATE, " +
+                "PRIMARY KEY (BorrowerID, BookID), " +
                 "FOREIGN KEY (BorrowerID) REFERENCES Borrowers(BorrowerID), " +
                 "FOREIGN KEY (BookID) REFERENCES Books(BookID))");
-        System.out.println("BorrowedBooks table created successfully.");
+        System.out.println("BorrowBooks table created successfully.");
 
            } catch (SQLException e) {
                if ("X0Y32".equals(e.getSQLState())) {
@@ -190,18 +191,89 @@ public class LibraryDB {
         }
         return null; // Return null if the book was not found
     }
-    public void addBorrowedBook(int borrowerID, int bookID, Date borrowDate, Date returnDate) throws SQLException {
-    String query = "INSERT INTO BorrowedBooks (BorrowerID, BookID, BorrowDate, ReturnDate) VALUES (?, ?, ?, ?)";
+   public void borrowBook(int borrowerID, int bookID, Date borrowDate, Date returnDate) throws SQLException {
+    String query = "INSERT INTO BorrowBooks (BorrowerID, BookID, BorrowDate, ReturnDate) VALUES (?, ?, ?, ?)";
     try (PreparedStatement pstmt = conn.prepareStatement(query)) {
         pstmt.setInt(1, borrowerID);
         pstmt.setInt(2, bookID);
         pstmt.setDate(3, new java.sql.Date(borrowDate.getTime()));
-        pstmt.setDate(4, returnDate != null ? new java.sql.Date(returnDate.getTime()) : null);
+        pstmt.setDate(4, new java.sql.Date(returnDate.getTime()));
         pstmt.executeUpdate();
     }
 }
-
+   public Borrower getBorrowerById(int borrowerID) throws SQLException {
+    String query = "SELECT * FROM Borrowers WHERE BorrowerID = ?";
+    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        pstmt.setInt(1, borrowerID);
+        try (ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                return new Borrower(
+                        rs.getInt("BorrowerID"),
+                        rs.getString("Name"),
+                        rs.getString("Contact"),
+                        rs.getString("Email")
+                );
+            }
+        }
+    }
+    return null; // Return null if the borrower was not found
 }
+   
+   public List<BorrowBook> getBorrowedBooksByBorrowerID(int borrowerID) throws SQLException {
+    String query = "SELECT bb.BookID, b.Title, b.Author, bb.BorrowDate, bb.ReturnDate " +
+                   "FROM BorrowBooks bb " +
+                   "JOIN Books b ON bb.BookID = b.BookID " +
+                   "WHERE bb.BorrowerID = ?";
+    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        pstmt.setInt(1, borrowerID);
+        try (ResultSet rs = pstmt.executeQuery()) {
+            List<BorrowBook> borrowBooks = new ArrayList<>();
+            while (rs.next()) {
+                BorrowBook borrowBook = new BorrowBook(
+                        borrowerID,
+                        rs.getInt("BookID"),
+                        rs.getString("Title"),
+                        rs.getString("Author"),
+                        rs.getDate("BorrowDate"),
+                        rs.getDate("ReturnDate")
+                );
+                borrowBooks.add(borrowBook);
+            }
+            return borrowBooks;
+        }
+    }
+}
+   
+   public Book getBookByTitle(String title) throws SQLException {
+    String query = "SELECT * FROM Books WHERE Title = ?";
+    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        pstmt.setString(1, title);
+        try (ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                return new Book(
+                        rs.getInt("BookID"),
+                        rs.getString("Title"),
+                        rs.getString("Author"),
+                        rs.getInt("Year"),
+                        rs.getInt("AvailableCopies")
+                );
+            }
+        }
+    }
+    return null;
+}
+   
+   public void returnBook(int borrowerID, int bookID) throws SQLException {
+    String query = "DELETE FROM BorrowBooks WHERE BorrowerID = ? AND BookID = ?";
+    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        pstmt.setInt(1, borrowerID);
+        pstmt.setInt(2, bookID);
+        pstmt.executeUpdate();
+    }
+}
+}
+
+
 
 
 
