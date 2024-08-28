@@ -38,7 +38,7 @@ public class LibraryDB {
         connect();
         setupDatabase();
     }
-          
+   
     private void setupDatabase() throws SQLException {
            try (Statement stmt = conn.createStatement()) {
                // Create Books Table if it doesn't exist
@@ -128,8 +128,8 @@ public class LibraryDB {
     }
 
     public void updateBook(Book book) throws SQLException {
-        String query = "UPDATE Books SET Title=?, Author=?, Year=?, AvailableCopies=? WHERE BookID=?";
-        PreparedStatement pstmt = conn.prepareStatement(query);
+    String query = "UPDATE Books SET Title=?, Author=?, \"Year\"=?, AvailableCopies=? WHERE BookID=?";
+    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
         pstmt.setString(1, book.getTitle());
         pstmt.setString(2, book.getAuthor());
         pstmt.setInt(3, book.getYear());
@@ -137,6 +137,7 @@ public class LibraryDB {
         pstmt.setInt(5, book.getBookID());
         pstmt.executeUpdate();
     }
+}
 
     public void updateBorrower(Borrower borrower) throws SQLException {
         String query = "UPDATE Borrowers SET Name=?, Contact=?, Email=? WHERE BorrowerID=?";

@@ -26,6 +26,7 @@ public class BookManagement extends javax.swing.JFrame {
             libraryDB = new LibraryDB(); 
             System.out.println("Database connection established in BookManagement.");
             displayAllBooks();
+            initializeTableSelectionListener();
         } catch (SQLException e) {
             System.err.println("Error during database connection or initialization: " + e.getMessage());
             e.printStackTrace();
@@ -56,6 +57,7 @@ public class BookManagement extends javax.swing.JFrame {
         delete = new javax.swing.JButton();
         back = new javax.swing.JButton();
         search = new javax.swing.JButton();
+        clearbtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -130,6 +132,13 @@ public class BookManagement extends javax.swing.JFrame {
             }
         });
 
+        clearbtn.setText("CLEAR");
+        clearbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearbtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -139,12 +148,14 @@ public class BookManagement extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3)
-                                .addComponent(yeartxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel4)
-                                .addComponent(copiestxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(search))
+                            .addComponent(jLabel3)
+                            .addComponent(yeartxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(copiestxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(search)
+                                .addGap(18, 18, 18)
+                                .addComponent(clearbtn))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -190,7 +201,9 @@ public class BookManagement extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(copiestxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(search))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(search)
+                            .addComponent(clearbtn)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(63, 63, 63)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -312,28 +325,68 @@ public class BookManagement extends javax.swing.JFrame {
     }//GEN-LAST:event_backActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        String title1 = titletxt.getText();
-        try {
-            List<Book> books = libraryDB.getAllBooks(); // You can create a specific search method instead
-            tableModel.setRowCount(0); // Clear existing rows
-            for (Book book : books) {
-                if (book.getTitle().equalsIgnoreCase(title1)) {
-                    Object[] rowData = {
-                            book.getBookID(),
-                            book.getTitle(),
-                            book.getAuthor(),
-                            book.getYear(),
-                            book.getAvailableCopies()
-                    };
-                    tableModel.addRow(rowData);
+         String title1 = titletxt.getText();
+    try {
+        List<Book> books = libraryDB.getAllBooks(); // You can create a specific search method instead
+        tableModel.setRowCount(0); // Clear existing rows
+
+        boolean bookFound = false;
+
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title1)) {
+                Object[] rowData = {
+                        book.getBookID(),
+                        book.getTitle(),
+                        book.getAuthor(),
+                        book.getYear(),
+                        book.getAvailableCopies()
+                };
+                tableModel.addRow(rowData);
+
+                if (!bookFound) {  // Populate the text fields with the first match
+                    authortxt.setText(book.getAuthor());
+                    yeartxt.setText(String.valueOf(book.getYear()));
+                    copiestxt.setText(String.valueOf(book.getAvailableCopies()));
+                    bookFound = true; // Set flag to indicate that we found a matching book
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error searching for the book.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
+        if (!bookFound) {
+            JOptionPane.showMessageDialog(this, "No book found with the title: " + title1, "No Match", JOptionPane.INFORMATION_MESSAGE);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error searching for the book.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     
     }//GEN-LAST:event_searchActionPerformed
+
+    private void clearbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtnActionPerformed
+        clearFields();
+    }//GEN-LAST:event_clearbtnActionPerformed
+    private void initializeTableSelectionListener() {
+    BooksInfotbl.getSelectionModel().addListSelectionListener(event -> {
+        if (!event.getValueIsAdjusting() && BooksInfotbl.getSelectedRow() != -1) {
+            // Get the selected row index
+            int selectedRow = BooksInfotbl.getSelectedRow();
+
+            // Retrieve data from the selected row
+            String title = BooksInfotbl.getValueAt(selectedRow, 1).toString();
+            String author = BooksInfotbl.getValueAt(selectedRow, 2).toString();
+            int year = Integer.parseInt(BooksInfotbl.getValueAt(selectedRow, 3).toString());
+            int copies = Integer.parseInt(BooksInfotbl.getValueAt(selectedRow, 4).toString());
+
+            // Display data in the text fields
+            titletxt.setText(title);
+            authortxt.setText(author);
+            yeartxt.setText(String.valueOf(year));
+            copiestxt.setText(String.valueOf(copies));
+        }
+    });
+}
+    
+    
     private void displayAllBooks() {
            try {
                List<Book> books = libraryDB.getAllBooks();
@@ -360,6 +413,8 @@ public class BookManagement extends javax.swing.JFrame {
         yeartxt.setText("");
         copiestxt.setText("");
     }
+
+
     public static void main(String args[]) {
         
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -398,6 +453,7 @@ public class BookManagement extends javax.swing.JFrame {
     private javax.swing.JButton add;
     private javax.swing.JTextField authortxt;
     private javax.swing.JButton back;
+    private javax.swing.JButton clearbtn;
     private javax.swing.JTextField copiestxt;
     private javax.swing.JButton delete;
     private javax.swing.JButton displayall;
