@@ -497,11 +497,7 @@ public class BorrowersManagement extends javax.swing.JFrame {
 
 
         libraryDB.returnBook(borrowerID, bookID);
-        Book book = libraryDB.getBookById(bookID);
-        if (book != null) {
-            book.setAvailableCopies(book.getAvailableCopies() + 1);
-            libraryDB.updateBook(book);
-        }
+        
 
         populateBooksComboBox();
         displayBorrowedBooks(borrowerID);

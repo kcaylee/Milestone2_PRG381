@@ -190,10 +190,13 @@ public class LibraryDB {
         return null; 
     }
    public void borrowBook(int borrowerID, int bookID, Date borrowDate, Date returnDate) throws SQLException {
-    Book book = getBookById(bookID);
+     Book book = getBookById(bookID);
     if (book.getAvailableCopies() > 0) {
+
+
         book.setAvailableCopies(book.getAvailableCopies() - 1);
         updateBook(book);
+
 
 
         String query = "INSERT INTO BorrowBooks (BorrowerID, BookID, BorrowDate, ReturnDate) VALUES (?, ?, ?, ?)";
@@ -208,6 +211,8 @@ public class LibraryDB {
         throw new SQLException("No available copies to borrow.");
     }
 }
+
+
    public Borrower getBorrowerById(int borrowerID) throws SQLException {
     String query = "SELECT * FROM Borrowers WHERE BorrowerID = ?";
     try (PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -272,19 +277,25 @@ public class LibraryDB {
 }
    
    public void returnBook(int borrowerID, int bookID) throws SQLException {
-    // Increment the available copies
+
+
+
+
     Book book = getBookById(bookID);
-    book.setAvailableCopies(book.getAvailableCopies() + 1);
+    int beforeCopies = book.getAvailableCopies();
+    book.setAvailableCopies(beforeCopies + 1);
+
+
     updateBook(book);
 
-    // Delete the borrowing record
+
     String query = "DELETE FROM BorrowBooks WHERE BorrowerID = ? AND BookID = ?";
     try (PreparedStatement pstmt = conn.prepareStatement(query)) {
         pstmt.setInt(1, borrowerID);
         pstmt.setInt(2, bookID);
         pstmt.executeUpdate();
     }
-}
+} 
 }
 
 
