@@ -42,7 +42,6 @@ public class LibraryDB {
    
     private void setupDatabase() throws SQLException {
            try (Statement stmt = conn.createStatement()) {
-               // Create Books Table if it doesn't exist
                stmt.executeUpdate("CREATE TABLE Books (" +
                        "BookID INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
                        "Title VARCHAR(255), " +
@@ -51,7 +50,6 @@ public class LibraryDB {
                        "AvailableCopies INT)");
                System.out.println("Books table created successfully.");
 
-               // Create Borrowers Table if it doesn't exist
                stmt.executeUpdate("CREATE TABLE Borrowers (" +
                        "BorrowerID INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
                        "Name VARCHAR(255), " +
@@ -73,12 +71,12 @@ public class LibraryDB {
                if ("X0Y32".equals(e.getSQLState())) {
                    System.out.println("Tables already exist, no need to create them again.");
                } else {
-                   throw e; // Rethrow if it's a different SQL exception
+                   throw e; 
                }
            }
        }
 
-    
+
     
 
     public void addBook(Book book) throws SQLException {
@@ -189,16 +187,25 @@ public class LibraryDB {
                 }
             }
         }
-        return null; // Return null if the book was not found
+        return null; 
     }
    public void borrowBook(int borrowerID, int bookID, Date borrowDate, Date returnDate) throws SQLException {
-    String query = "INSERT INTO BorrowBooks (BorrowerID, BookID, BorrowDate, ReturnDate) VALUES (?, ?, ?, ?)";
-    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-        pstmt.setInt(1, borrowerID);
-        pstmt.setInt(2, bookID);
-        pstmt.setDate(3, new java.sql.Date(borrowDate.getTime()));
-        pstmt.setDate(4, new java.sql.Date(returnDate.getTime()));
-        pstmt.executeUpdate();
+    Book book = getBookById(bookID);
+    if (book.getAvailableCopies() > 0) {
+        book.setAvailableCopies(book.getAvailableCopies() - 1);
+        updateBook(book);
+
+
+        String query = "INSERT INTO BorrowBooks (BorrowerID, BookID, BorrowDate, ReturnDate) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, borrowerID);
+            pstmt.setInt(2, bookID);
+            pstmt.setDate(3, new java.sql.Date(borrowDate.getTime()));
+            pstmt.setDate(4, new java.sql.Date(returnDate.getTime()));
+            pstmt.executeUpdate();
+        }
+    } else {
+        throw new SQLException("No available copies to borrow.");
     }
 }
    public Borrower getBorrowerById(int borrowerID) throws SQLException {
@@ -216,8 +223,9 @@ public class LibraryDB {
             }
         }
     }
-    return null; // Return null if the borrower was not found
+    return null; 
 }
+
    
    public List<BorrowBook> getBorrowedBooksByBorrowerID(int borrowerID) throws SQLException {
     String query = "SELECT bb.BookID, b.Title, b.Author, bb.BorrowDate, bb.ReturnDate " +
@@ -264,6 +272,12 @@ public class LibraryDB {
 }
    
    public void returnBook(int borrowerID, int bookID) throws SQLException {
+    // Increment the available copies
+    Book book = getBookById(bookID);
+    book.setAvailableCopies(book.getAvailableCopies() + 1);
+    updateBook(book);
+
+    // Delete the borrowing record
     String query = "DELETE FROM BorrowBooks WHERE BorrowerID = ? AND BookID = ?";
     try (PreparedStatement pstmt = conn.prepareStatement(query)) {
         pstmt.setInt(1, borrowerID);

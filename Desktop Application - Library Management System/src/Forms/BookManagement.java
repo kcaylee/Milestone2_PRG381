@@ -7,11 +7,7 @@ import models.Book;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.sql.SQLException;
-import java.util.List;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BookManagement extends javax.swing.JFrame {
@@ -33,6 +29,7 @@ public class BookManagement extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error connecting to the database. Please check your database configuration.", "Database Error", JOptionPane.ERROR_MESSAGE);
             this.dispose(); 
         }
+        
     }
 
      
@@ -242,22 +239,15 @@ public class BookManagement extends javax.swing.JFrame {
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
         try {
-        // Get the input from the text fields
         String title = titletxt.getText();
         String author = authortxt.getText();
-        int year = Integer.parseInt(yeartxt.getText());  // Convert the year to an integer
-        int copies = Integer.parseInt(copiestxt.getText());  // Convert the copies to an integer
+        int year = Integer.parseInt(yeartxt.getText());  
+        int copies = Integer.parseInt(copiestxt.getText());  
 
-        // Create a new book object
+
         Book newBook = new Book(0, title, author, year, copies);
-
-        // Add the book to the database
         libraryDB.addBook(newBook);
-
-        // Refresh the table to show the new book
         displayAllBooks();
-
-        // Clear the text fields for the next input
         clearFields();
 
     } catch (SQLException | NumberFormatException e) {
@@ -289,7 +279,7 @@ public class BookManagement extends javax.swing.JFrame {
                     book.setAvailableCopies(copies);
 
                     libraryDB.updateBook(book);
-                    displayAllBooks(); // Refresh the table
+                    displayAllBooks(); 
                     clearFields();
                 }
             } catch (SQLException | NumberFormatException e) {
@@ -307,7 +297,7 @@ public class BookManagement extends javax.swing.JFrame {
             int bookID = (int) BooksInfotbl.getValueAt(selectedRow, 0);
             try {
                 libraryDB.deleteBook(bookID);
-                displayAllBooks(); // Refresh the table
+                displayAllBooks(); 
                 clearFields();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -327,8 +317,8 @@ public class BookManagement extends javax.swing.JFrame {
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
          String title1 = titletxt.getText();
     try {
-        List<Book> books = libraryDB.getAllBooks(); // You can create a specific search method instead
-        tableModel.setRowCount(0); // Clear existing rows
+        List<Book> books = libraryDB.getAllBooks(); 
+        tableModel.setRowCount(0); 
 
         boolean bookFound = false;
 
@@ -343,11 +333,11 @@ public class BookManagement extends javax.swing.JFrame {
                 };
                 tableModel.addRow(rowData);
 
-                if (!bookFound) {  // Populate the text fields with the first match
+                if (!bookFound) {  
                     authortxt.setText(book.getAuthor());
                     yeartxt.setText(String.valueOf(book.getYear()));
                     copiestxt.setText(String.valueOf(book.getAvailableCopies()));
-                    bookFound = true; // Set flag to indicate that we found a matching book
+                    bookFound = true; 
                 }
             }
         }
@@ -368,16 +358,13 @@ public class BookManagement extends javax.swing.JFrame {
     private void initializeTableSelectionListener() {
     BooksInfotbl.getSelectionModel().addListSelectionListener(event -> {
         if (!event.getValueIsAdjusting() && BooksInfotbl.getSelectedRow() != -1) {
-            // Get the selected row index
             int selectedRow = BooksInfotbl.getSelectedRow();
 
-            // Retrieve data from the selected row
             String title = BooksInfotbl.getValueAt(selectedRow, 1).toString();
             String author = BooksInfotbl.getValueAt(selectedRow, 2).toString();
             int year = Integer.parseInt(BooksInfotbl.getValueAt(selectedRow, 3).toString());
             int copies = Integer.parseInt(BooksInfotbl.getValueAt(selectedRow, 4).toString());
 
-            // Display data in the text fields
             titletxt.setText(title);
             authortxt.setText(author);
             yeartxt.setText(String.valueOf(year));
