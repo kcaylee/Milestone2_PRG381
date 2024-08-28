@@ -57,6 +57,16 @@ public class LibraryDB {
                        "Contact VARCHAR(255), " +
                        "Email VARCHAR(255))");
                System.out.println("Borrowers table created successfully.");
+               
+               stmt.executeUpdate("CREATE TABLE BorrowedBooks (" +
+                "LoanID INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
+                "BorrowerID INT, " +
+                "BookID INT, " +
+                "BorrowDate DATE, " +
+                "ReturnDate DATE, " +
+                "FOREIGN KEY (BorrowerID) REFERENCES Borrowers(BorrowerID), " +
+                "FOREIGN KEY (BookID) REFERENCES Books(BookID))");
+        System.out.println("BorrowedBooks table created successfully.");
 
            } catch (SQLException e) {
                if ("X0Y32".equals(e.getSQLState())) {
@@ -180,7 +190,17 @@ public class LibraryDB {
         }
         return null; // Return null if the book was not found
     }
-    
+    public void addBorrowedBook(int borrowerID, int bookID, Date borrowDate, Date returnDate) throws SQLException {
+    String query = "INSERT INTO BorrowedBooks (BorrowerID, BookID, BorrowDate, ReturnDate) VALUES (?, ?, ?, ?)";
+    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        pstmt.setInt(1, borrowerID);
+        pstmt.setInt(2, bookID);
+        pstmt.setDate(3, new java.sql.Date(borrowDate.getTime()));
+        pstmt.setDate(4, returnDate != null ? new java.sql.Date(returnDate.getTime()) : null);
+        pstmt.executeUpdate();
+    }
+}
+
 }
 
 
