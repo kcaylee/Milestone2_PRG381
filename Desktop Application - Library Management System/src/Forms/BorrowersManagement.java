@@ -72,8 +72,9 @@ public class BorrowersManagement extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(214, 178, 186));
 
+        borrowtbl.setBackground(new java.awt.Color(162, 168, 171));
         borrowtbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -84,6 +85,7 @@ public class BorrowersManagement extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(borrowtbl);
 
+        borrowedbookstbl.setBackground(new java.awt.Color(162, 168, 171));
         borrowedbookstbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -96,14 +98,17 @@ public class BorrowersManagement extends javax.swing.JFrame {
 
         jLabel1.setText("Borrower Name");
 
+        borrwernametxt.setForeground(new java.awt.Color(153, 153, 153));
         borrwernametxt.setText("Please Enter Name");
 
         jLabel2.setText("Contact");
 
-        contacttxt.setText("Please Enter contact");
+        contacttxt.setForeground(new java.awt.Color(153, 153, 153));
+        contacttxt.setText("Please Enter Contact");
 
         jLabel3.setText("Email");
 
+        emailtxt.setForeground(new java.awt.Color(153, 153, 153));
         emailtxt.setText("Please Enter Email");
 
         addborrowerbtn.setText("ADD");
@@ -157,14 +162,17 @@ public class BorrowersManagement extends javax.swing.JFrame {
 
         jLabel6.setText("Enter Borrower ID");
 
+        borrowbookborrowerID.setForeground(new java.awt.Color(153, 153, 153));
         borrowbookborrowerID.setText("Please enter borrower ID");
 
         jLabel7.setText("Borrow Date");
 
+        borrowdatetxt.setForeground(new java.awt.Color(153, 153, 153));
         borrowdatetxt.setText("Please Enter Date");
 
         jLabel8.setText("Return Date");
 
+        returnDatetxt.setForeground(new java.awt.Color(153, 153, 153));
         returnDatetxt.setText("Please enter return date");
 
         borrowbookbtn.setText("BORROW");

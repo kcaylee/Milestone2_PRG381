@@ -58,8 +58,9 @@ public class BookManagement extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(189, 135, 156));
 
+        BooksInfotbl.setBackground(new java.awt.Color(162, 168, 171));
         BooksInfotbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -79,12 +80,16 @@ public class BookManagement extends javax.swing.JFrame {
 
         jLabel4.setText("Copies");
 
+        titletxt.setForeground(new java.awt.Color(153, 153, 153));
         titletxt.setText("Please Enter");
 
+        authortxt.setForeground(new java.awt.Color(153, 153, 153));
         authortxt.setText("Please enter Author");
 
+        yeartxt.setForeground(new java.awt.Color(153, 153, 153));
         yeartxt.setText("Please enter the release year");
 
+        copiestxt.setForeground(new java.awt.Color(153, 153, 153));
         copiestxt.setText("Please enter the number of copies");
 
         add.setText("ADD");

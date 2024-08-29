@@ -42,7 +42,7 @@
     <Container class="javax.swing.JPanel" name="jPanel1">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="cc" green="cc" red="cc" type="rgb"/>
+          <Color blue="ba" green="b2" red="d6" type="rgb"/>
         </Property>
       </Properties>
 
@@ -211,6 +211,9 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="borrowtbl">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ab" green="a8" red="a2" type="rgb"/>
+                </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="4" rowCount="0">
                     <Column editable="true" title="Borrower ID" type="java.lang.Object"/>
@@ -259,6 +262,9 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="borrowedbookstbl">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ab" green="a8" red="a2" type="rgb"/>
+                </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="5" rowCount="0">
                     <Column editable="true" title="Book ID" type="java.lang.Object"/>
@@ -311,6 +317,9 @@
         </Component>
         <Component class="javax.swing.JTextField" name="borrwernametxt">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="99" red="99" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Please Enter Name"/>
           </Properties>
         </Component>
@@ -321,7 +330,10 @@
         </Component>
         <Component class="javax.swing.JTextField" name="contacttxt">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Please Enter contact"/>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="99" red="99" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Please Enter Contact"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
@@ -331,6 +343,9 @@
         </Component>
         <Component class="javax.swing.JTextField" name="emailtxt">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="99" red="99" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Please Enter Email"/>
           </Properties>
         </Component>
@@ -415,6 +430,9 @@
         </Component>
         <Component class="javax.swing.JTextField" name="borrowbookborrowerID">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="99" red="99" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Please enter borrower ID"/>
           </Properties>
         </Component>
@@ -425,6 +443,9 @@
         </Component>
         <Component class="javax.swing.JTextField" name="borrowdatetxt">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="99" red="99" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Please Enter Date"/>
           </Properties>
         </Component>
@@ -435,6 +456,9 @@
         </Component>
         <Component class="javax.swing.JTextField" name="returnDatetxt">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="99" red="99" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Please enter return date"/>
           </Properties>
         </Component>
