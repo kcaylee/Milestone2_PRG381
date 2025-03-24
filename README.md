@@ -1,10 +1,38 @@
-For this milestone, we developed a Java Library Management System as a desktop application. This project focuses on managing a library's book inventory and borrowing transactions, with the following core requirements:
+# 📚 Java Library Management System
 
-Graphical User Interface (GUI): Built using Java Swing to create an intuitive and user-friendly interface.
+This project is a **Java desktop application** developed to manage a library's book inventory and borrowing transactions. It was built as part of a milestone for PRG381, focusing on applying **Core Java**, **Java Swing**, and **JavaDB** to deliver a fully functional CRUD system.
 
-Programming Concepts: Utilized Core Java and Object-Oriented Programming (OOP) principles to structure and organize the application.
+## ✨ Key Features
 
-Database Operations (CRUD): Implemented Create, Read, Update, and Delete (CRUD) functionalities using a JavaDB database to manage library records and transactions efficiently.
+- 🖥️ **Graphical User Interface (GUI):**  
+  Built using **Java Swing** to provide an intuitive, user-friendly experience.
+
+- ⚙️ **Core Functionality (CRUD):**  
+  - Create, Read, Update, and Delete records  
+  - Efficiently manage books and borrower information  
+  - Track borrowing and returning transactions  
+
+- 🧱 **Programming Concepts Used:**  
+  - Core Java  
+  - Object-Oriented Programming (OOP) principles  
+  - MVC-style separation of logic (where applicable)
+
+- 🗃️ **Database Integration:**  
+  - Uses **JavaDB** (Derby) for data persistence  
+  - Real-time interaction with the UI for seamless updates
+
+## 💻 Technologies Used
+
+- **Java**
+- **Java Swing**
+- **JavaDB (Apache Derby)**
+- **JDBC**
+
+## 🤝 Contributors
+
+- **Kaylee** ([@kcaylee](https://github.com/kcaylee))  
+- **Quinton Crouse** ([@Shaded010](https://github.com/Shaded010))
+
+---
 
 
-This project highlights the integration of Java Swing for the front-end and JavaDB for data storage, showcasing key software development practices in Java for building functional desktop applications.
